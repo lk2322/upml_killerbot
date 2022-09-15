@@ -1,0 +1,24 @@
+from functools import wraps
+
+import peewee
+
+
+def format_name(name: str):
+    names = name.split()
+    for i in range(len(names)):
+        names[i] = names[i].capitalize()
+    return " ".join(names)
+
+
+def connect_db(db: peewee.Database):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            db.connect(reuse_if_open=True)
+            result = func(*args, **kwargs)
+            db.close()
+            return result
+
+        return wrapper
+
+    return decorator

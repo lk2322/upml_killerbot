@@ -1,0 +1,14 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  killer:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    volumes:
+      - db:/app/data
+      - log:/var/log
+    env_file:
+      - .env
+volumes:
+    db:
+    log:
