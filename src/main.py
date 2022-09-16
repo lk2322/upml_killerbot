@@ -23,7 +23,7 @@ async def send_welcome(message: types.Message):
     await message.answer(msg.WELCOME, reply_markup=keyboard.inline_join)
 
 
-@admin_only()
+@admin_only
 @dp.message_handler(commands=['check_users'])
 async def check_users(message: types.Message):
     res = ""
@@ -37,7 +37,7 @@ async def check_users(message: types.Message):
     await message.answer(res)
 
 
-@admin_only()
+@admin_only
 @dp.message_handler(commands=['delete_users'])
 async def delete_users(message: types.Message):
     ids = message.text.split()[1:]
@@ -49,7 +49,7 @@ async def delete_users(message: types.Message):
     await message.answer("Deleted")
 
 
-@admin_only()
+@admin_only
 @dp.message_handler(commands=['start_game'])
 async def start_game(message: types.Message):
     db.start_game()
@@ -62,7 +62,7 @@ async def start_game(message: types.Message):
     await message.answer("Game started")
 
 
-@admin_only()
+@admin_only
 @dp.message_handler(commands=['shuffle'])
 async def shuffle(message: types.Message):
     db.shuffle_users()
@@ -75,7 +75,7 @@ async def shuffle(message: types.Message):
     await message.answer("Shuffled")
 
 
-@admin_only()
+@admin_only
 @dp.message_handler(commands=['kill'])
 async def kill(message: types.Message):
     ids = message.text.split()[1:]
@@ -89,7 +89,7 @@ async def kill(message: types.Message):
     await message.answer("Killed")
 
 
-@admin_only()
+@admin_only
 @dp.message_handler(commands=['message'])
 async def message_to_all(message: types.Message):
     text = message.text.split()[1:]
