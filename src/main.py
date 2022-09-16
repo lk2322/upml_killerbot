@@ -1,4 +1,3 @@
-import logging
 import os
 
 import aiogram.utils.exceptions
@@ -10,9 +9,10 @@ import keyboard
 import msg
 import states
 import db
+from utils import admin_only
+
 load_dotenv()
 API_TOKEN = os.getenv("TOKEN")
-
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
@@ -23,10 +23,9 @@ async def send_welcome(message: types.Message):
     await message.answer(msg.WELCOME, reply_markup=keyboard.inline_join)
 
 
+@admin_only
 @dp.message_handler(commands=['check_users'])
 async def check_users(message: types.Message):
-    if message.from_user.id != int(os.getenv("ADMIN_ID")):
-        return
     res = ""
     for i in db.get_all_users():
         try:
@@ -38,10 +37,9 @@ async def check_users(message: types.Message):
     await message.answer(res)
 
 
+@admin_only
 @dp.message_handler(commands=['delete_users'])
 async def delete_users(message: types.Message):
-    if message.from_user.id != int(os.getenv("ADMIN_ID")):
-        return
     ids = message.text.split()[1:]
     for i in ids:
         try:
@@ -51,10 +49,9 @@ async def delete_users(message: types.Message):
     await message.answer("Deleted")
 
 
+@admin_only
 @dp.message_handler(commands=['start_game'])
 async def start_game(message: types.Message):
-    if message.from_user.id != int(os.getenv("ADMIN_ID")):
-        return
     db.start_game()
     for i in db.get_all_users():
         try:
@@ -65,10 +62,9 @@ async def start_game(message: types.Message):
     await message.answer("Game started")
 
 
+@admin_only
 @dp.message_handler(commands=['shuffle'])
 async def shuffle(message: types.Message):
-    if message.from_user.id != int(os.getenv("ADMIN_ID")):
-        return
     db.shuffle_users()
     for i in db.get_all_alive_users():
         try:
@@ -79,10 +75,9 @@ async def shuffle(message: types.Message):
     await message.answer("Shuffled")
 
 
+@admin_only
 @dp.message_handler(commands=['kill'])
 async def kill(message: types.Message):
-    if message.from_user.id != int(os.getenv("ADMIN_ID")):
-        return
     ids = message.text.split()[1:]
     for i in ids:
         try:
@@ -94,10 +89,9 @@ async def kill(message: types.Message):
     await message.answer("Killed")
 
 
+@admin_only
 @dp.message_handler(commands=['message'])
 async def message_to_all(message: types.Message):
-    if message.from_user.id != int(os.getenv("ADMIN_ID")):
-        return
     text = message.text.split()[1:]
     text = " ".join(text)
     ids = db.get_all_users()
