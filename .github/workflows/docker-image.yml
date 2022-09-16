@@ -10,7 +10,10 @@ jobs:
   build:
     environment: main
     runs-on: self-hosted
-
+    env:
+      TOKEN: ${{ secrets.TOKEN }}
+      ADMIN_ID: ${{ secrets.ADMIN_ID }}
+      DB_FILE: ${{ secrets.DB_FILE }}
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
