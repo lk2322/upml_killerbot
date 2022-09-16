@@ -8,9 +8,9 @@ services:
       - db:/app/data
       - log:/var/log
     environment:
-      - TOKEN=$TOKEN
-      - DB_FILE=$DB_FILE
-      - ADMIN_ID=$ADMIN_ID
+      - TOKEN
+      - DB_FILE
+      - ADMIN_ID
       
 volumes:
     db:
