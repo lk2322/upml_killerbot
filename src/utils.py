@@ -1,15 +1,16 @@
+import logging
 import os
 from functools import wraps
-
+from log import logger
 import peewee
 from aiogram import types
 
 
 def admin_only(func):
-    async def wrapper(*args, **kwargs):
+    async def wrapper(*args):
         if args[0].from_user.id != int(os.getenv("ADMIN_ID")):
             return
-        return await func(*args, **kwargs)
+        return await func(*args)
 
     return wrapper
 
