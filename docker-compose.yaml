@@ -7,8 +7,11 @@ services:
     volumes:
       - db:/app/data
       - log:/var/log
-    env_file:
-      - .env
+    environment:
+      - TOKEN=${{ secrets.TOKEN }}
+      - DB_FILE=${{ secrets.DB_FILE }}
+      - ADMIN_ID=${{ secrets.ADMIN_ID }}
+      
 volumes:
     db:
     log:
