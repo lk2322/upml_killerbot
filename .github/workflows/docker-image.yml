@@ -15,3 +15,5 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker-compose up -d --build
+    - name: Debug
+      run: docker ps -a
