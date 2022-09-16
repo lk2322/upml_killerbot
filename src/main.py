@@ -22,9 +22,8 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 async def send_welcome(message: types.Message):
     await message.answer(msg.WELCOME, reply_markup=keyboard.inline_join)
 
-
-@admin_only
 @dp.message_handler(commands=['check_users'])
+@admin_only
 async def check_users(message: types.Message):
     res = ""
     for i in db.get_all_users():
@@ -37,8 +36,8 @@ async def check_users(message: types.Message):
     await message.answer(res)
 
 
-@admin_only
 @dp.message_handler(commands=['delete_users'])
+@admin_only
 async def delete_users(message: types.Message):
     ids = message.text.split()[1:]
     for i in ids:
@@ -49,8 +48,8 @@ async def delete_users(message: types.Message):
     await message.answer("Deleted")
 
 
-@admin_only
 @dp.message_handler(commands=['start_game'])
+@admin_only
 async def start_game(message: types.Message):
     db.start_game()
     for i in db.get_all_users():
@@ -62,8 +61,8 @@ async def start_game(message: types.Message):
     await message.answer("Game started")
 
 
-@admin_only
 @dp.message_handler(commands=['shuffle'])
+@admin_only
 async def shuffle(message: types.Message):
     db.shuffle_users()
     for i in db.get_all_alive_users():
@@ -75,8 +74,8 @@ async def shuffle(message: types.Message):
     await message.answer("Shuffled")
 
 
-@admin_only
 @dp.message_handler(commands=['kill'])
+@admin_only
 async def kill(message: types.Message):
     ids = message.text.split()[1:]
     for i in ids:
@@ -89,8 +88,8 @@ async def kill(message: types.Message):
     await message.answer("Killed")
 
 
-@admin_only
 @dp.message_handler(commands=['message'])
+@admin_only
 async def message_to_all(message: types.Message):
     text = message.text.split()[1:]
     text = " ".join(text)
