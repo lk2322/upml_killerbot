@@ -1,6 +1,18 @@
+import os
 from functools import wraps
 
 import peewee
+from aiogram import types
+
+
+def admin_only(func):
+    @wraps(func)
+    async def wrapper(message: types.Message, *args, **kwargs):
+        if message.from_user.id != int(os.getenv("ADMIN_ID")):
+            return
+        return await func(message, *args, **kwargs)
+
+    return wrapper
 
 
 def format_name(name: str):
