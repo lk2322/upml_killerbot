@@ -5,6 +5,7 @@ import dotenv
 import random
 
 dotenv.load_dotenv()
+print(os.getenv('DB_FILE'))
 db = peewee.SqliteDatabase(os.getenv('DB_FILE'), pragmas={'foreign_keys': 1})
 
 
