@@ -7,6 +7,7 @@ This bot was created for the game "Killer" in the Ugra Physics and Mathematics L
     * DB_FILE - DB path
     * ADMIN_ID - Telegram id admin
 2.  Launch
+
       Local
       
       ```
