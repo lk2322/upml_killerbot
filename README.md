@@ -1,4 +1,4 @@
-# UMPL Killer bot
+# UPML Killer bot
 This bot was created for the game "Killer" in the Ugra Physics and Mathematics Lyceum.
 
 ## Deploy
