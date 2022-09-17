@@ -5,7 +5,7 @@ services:
         context: .
         dockerfile: Dockerfile
     volumes:
-      - db:$DB_FILE
+      - db:${DB_FILE}
       - log:/var/log
     environment:
       - TOKEN
