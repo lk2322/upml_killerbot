@@ -36,6 +36,16 @@ async def check_users(message: types.Message):
     await message.answer(res)
 
 
+@dp.message_handler(commands=['list_alive'])
+@admin_only
+async def list_alive(message: types.Message):
+    res = ""
+    for i in db.get_all_alive_users():
+        res += f"{i.id}. {i.name}\n"
+    if res == "":
+        res = "No users"
+    await message.answer(res)
+
 @dp.message_handler(commands=['delete_users'])
 @admin_only
 async def delete_users(message: types.Message):
