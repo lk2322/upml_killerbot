@@ -96,8 +96,10 @@ def remove_relationship(killer, victim):
 @utils.connect_db(db)
 def remove_user(id):
     user = get_user_by_id(id)
+    telegram_id = user.telegram_id
     user.delete_instance()
     user.save()
+    return telegram_id
 
 
 @utils.connect_db(db)
