@@ -52,9 +52,14 @@ async def delete_users(message: types.Message):
     ids = message.text.split()[1:]
     for i in ids:
         try:
-            db.remove_user(int(i))
+            t_id = db.remove_user(int(i))
+            await bot.send_message(t_id, msg.DELETED)
         except peewee.DoesNotExist:
             await message.answer(f"User with id {i} does not exist")
+        except aiogram.utils.exceptions.BotBlocked:
+            await message.answer(f"User with id {i} blocked bot")
+        except aiogram.utils.exceptions.ChatNotFound:
+            await message.answer(f"User with id {i} not found")
     await message.answer("Deleted")
 
 
@@ -68,6 +73,8 @@ async def start_game(message: types.Message):
                                    reply_markup=keyboard.main_markup)
         except aiogram.utils.exceptions.ChatNotFound:
             await message.answer(f"User with id {i.telegram_id} does not exist")
+        except aiogram.utils.exceptions.BotBlocked:
+            await message.answer(f"User with id {i.telegram_id} blocked bot")
     await message.answer("Game started")
 
 
@@ -81,6 +88,8 @@ async def shuffle(message: types.Message):
                                    reply_markup=keyboard.main_markup)
         except aiogram.utils.exceptions.ChatNotFound:
             await message.answer(f"User with id {i.telegram_id} does not exist")
+        except aiogram.utils.exceptions.BotBlocked:
+            await message.answer(f"User with id {i.telegram_id} blocked bot")
     await message.answer("Shuffled")
 
 
@@ -95,6 +104,10 @@ async def kill(message: types.Message):
             await bot.send_message(user.telegram_id, "Вы умерли")
         except peewee.DoesNotExist:
             await message.answer(f"User with id {i} does not exist")
+        except aiogram.utils.exceptions.BotBlocked:
+            await message.answer(f"User with id {i} blocked bot")
+        except aiogram.utils.exceptions.ChatNotFound:
+            await message.answer(f"User with id {i} not found")
     await message.answer("Killed")
 
 
@@ -109,6 +122,10 @@ async def message_to_all(message: types.Message):
             await bot.send_message(i.telegram_id, text)
         except peewee.DoesNotExist:
             await message.answer(f"User with id {i.id} does not exist")
+        except aiogram.utils.exceptions.BotBlocked:
+            await message.answer(f"User with id {i.id} blocked bot")
+        except aiogram.utils.exceptions.ChatNotFound:
+            await message.answer(f"User with id {i.id} not found")
     await message.answer("Sent")
 
 
