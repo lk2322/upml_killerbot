@@ -18,4 +18,6 @@ This bot was created for the game "Killer" in the Ugra Physics and Mathematics L
       ```
       docker-compose up
       ```
-    
+## TODO
+- [ ] - Refactor all this shit
+- [ ] - Make transactions in the database
