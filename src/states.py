@@ -44,6 +44,7 @@ async def death_confirm(message: types.Message, state: FSMContext):
     if message.text == 'Да':
         killer, victim, user = db.kill_user_by_telegram_id(message.from_user.id)
         logger.info(f"{killer.name} killed {user.name} ({victim.name})")
+        await dp.bot.send_message(killer.telegram_id, f"Ваша цель: {victim.name}")
         await message.answer(msg.DEATH_CONFIRMED, reply_markup=ReplyKeyboardRemove())
     else:
         await message.answer("Отмена", reply_markup=keyboard.main_markup)
