@@ -33,7 +33,11 @@ async def check_users(message: types.Message):
             res += f"{i.id}. {i.name} - {i.kills} kills - {i.is_dead}\n"
     if res == "":
         res = "No users"
-    await message.answer(res)
+
+    res_1 = res[:len(res)//2]
+    res_2 = res[len(res)//2:]
+    await message.answer(res_1)
+    await message.answer(res_2)
 
 
 @dp.message_handler(commands=['list_alive'])
