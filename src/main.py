@@ -140,7 +140,7 @@ async def target(message: types.Message):
         if user.is_dead:
             await message.answer("Вы мертвы")
         else:
-            await message.answer(f"Ваша цель: {user.victim.get().victim.name}")
+            await message.answer(f"Ваша цель: {user.victim.get().victim.name}", reply_markup=keyboard.main_markup)
 
 
 states.register_handlers(dp)
