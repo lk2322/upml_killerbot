@@ -118,7 +118,7 @@ async def kill(message: types.Message):
 @dp.message_handler(commands=['message'])
 @admin_only
 async def message_to_all(message: types.Message):
-    text = message.text.split()[1:]
+    text = message.text.split(" ")[1:]
     text = " ".join(text)
     ids = db.get_all_users()
     for i in ids:
