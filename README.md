@@ -12,12 +12,12 @@ This bot was created for the game "Killer" in the Ugra Physics and Mathematics L
 2.  Launch
     * Local
       ```
-      pip install -r requirements.txt
-      python src/main.py
+      pip install -r ./requirements.txt
+      python -m src
       ```
     * Docker
       ```
-      docker-compose up
+      docker-compose up -d --no-deps --build
       ```
 
 ## TODO
