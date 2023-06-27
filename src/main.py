@@ -16,6 +16,6 @@ async def on_startup(dp: Dispatcher) -> None:
 
 
 if __name__ == '__main__':
-    bot = Bot(token=Config.TOKEN)
+    bot = Bot(token=Config.TOKEN, parse_mode='markdown')
     dp = Dispatcher(bot, storage=MemoryStorage())
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup)

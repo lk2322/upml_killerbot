@@ -3,6 +3,7 @@ from aiogram import Dispatcher, types
 from src.database import db_funcs
 from src.handlers import states
 from src.utils import consts
+from src.utils.funcs import game_started
 from src.utils.keyboards import inline_join, main_markup
 
 
@@ -10,10 +11,8 @@ async def send_welcome(message: types.Message):
     await message.answer(consts.WELCOME, reply_markup=inline_join)
 
 
+@game_started
 async def target(message: types.Message):
-    if db_funcs.get_all_relationships().count() == 0:
-        return
-
     if message.text == consts.TextCommands.CONFIRM_DEATH:
         await states.death_start(message)
         return
