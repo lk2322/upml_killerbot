@@ -3,20 +3,19 @@ name: Deploy to production
 on:
   push:
     branches: [ "master" ]
-    paths-ignore:
-        - '**/README.md'
 
 
 jobs:
-
   build:
     environment: main
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       TOKEN: ${{ secrets.TOKEN }}
-      ADMIN_ID: ${{ secrets.ADMIN_ID }}
       DB_FILE: ${{ secrets.DB_FILE }}
+      LOG_FILE: ${{ secrets.LOG_FILE }}
+      BETTER_CALL_SAUL: ${{ secrets.BETTER_CALL_SAUL }}
+      ADMIN_ID: ${{ secrets.ADMIN_ID }}
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker-compose up -d --build
+      - uses: actions/checkout@v3
+      - name: Build and run the Docker
+        run: docker-compose up -d --build

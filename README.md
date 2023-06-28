@@ -20,6 +20,17 @@ This bot was created for the game "Killer" in the Ugra Physics and Mathematics L
       docker-compose up -d --no-deps --build
       ```
 
+## Admin commands
+*[ids] - DB IDs separated by a space*\
+*[text] - any message*
+- /check_users
+- /list_alive
+- /delete_users *[ids]*
+- /kill *[ids]*
+- /start_game
+- /shuffle
+- /message *[text]*
+
 ## TODO
 - [ ] - Refactor all this shit
 - [ ] - Make transactions in the database
