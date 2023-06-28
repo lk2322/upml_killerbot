@@ -8,11 +8,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/code
-      - db:/app/src/database/db_files
-      - log:/app/src/database/db_files
+      - db_files:/app/src/database/db_files
     environment:
       PYTHONUNBUFFERED: 1
+      PYTHONDONTWRITEBYTECODE: 1
 
 volumes:
-  db:
-  log:
+  db_files:
