@@ -10,13 +10,15 @@ jobs:
   build:
     environment: main
     runs-on: ubuntu-latest
-    env:
-      TOKEN: ${{ secrets.TOKEN }}
-      DB_FILE: ${{ secrets.DB_FILE }}
-      LOG_FILE: ${{ secrets.LOG_FILE }}
-      BETTER_CALL_SAUL: ${{ secrets.BETTER_CALL_SAUL }}
-      ADMIN_ID: ${{ secrets.ADMIN_ID }}
     steps:
       - uses: actions/checkout@v3
+      - name: Create env file
+        run: |
+          touch .env
+          echo TOKEN=${{ secrets.TOKEN }} >> .env
+          echo DB_FILE=${{ secrets.DB_FILE }} >> .env
+          echo LOG_FILE=${{ secrets.LOG_FILE }} >> .env
+          echo BETTER_CALL_SAUL=${{ secrets.BETTER_CALL_SAUL }} >> .env
+          echo ADMIN_ID=${{ secrets.ADMIN_ID }} >> .env
       - name: Build and run the Docker
         run: docker-compose up -d --build

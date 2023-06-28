@@ -19,10 +19,9 @@ RUN apt-get update && \
 
 COPY --from=builder /app/wheels /wheels
 COPY --from=builder /app/requirements.txt .
-COPY src ./src
 
-# Если файл не создан, то ошибки не будет (для github actions)
-COPY .en[v] .
+COPY src ./src
+COPY .env .
 
 RUN pip install --no-cache /wheels/*
 
