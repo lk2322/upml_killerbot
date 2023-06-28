@@ -1,17 +1,17 @@
 version: "3.9"  # optional since v1.27.0
 services:
   killer:
+    container_name: upml_killerbot
+    image: upml_killerimage
     build:
-        context: .
-        dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - db:/app/data
-      - log:/var/log
+      - .:/code
+      - db_files:/app/src/database/db_files
     environment:
-      - TOKEN
-      - DB_FILE
-      - ADMIN_ID
-      
+      PYTHONUNBUFFERED: 1
+      PYTHONDONTWRITEBYTECODE: 1
+
 volumes:
-    db:
-    log:
+  db_files:

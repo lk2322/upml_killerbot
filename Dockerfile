@@ -1,4 +1,4 @@
-FROM python:3.10-slim as builder
+FROM python:3.10.11-slim as builder
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN apt-get update && \
 COPY requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
 
-FROM python:3.9-slim
+FROM python:3.10.11-slim
 
 WORKDIR /app
 RUN apt-get update && \
@@ -19,8 +19,10 @@ RUN apt-get update && \
 
 COPY --from=builder /app/wheels /wheels
 COPY --from=builder /app/requirements.txt .
-COPY src .
+
+COPY src ./src
+COPY .env .
 
 RUN pip install --no-cache /wheels/*
 
-CMD ["python", "main.py"]
+CMD ["python", "-m", "src"]
