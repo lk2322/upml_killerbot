@@ -2,6 +2,8 @@ name: Deploy to production
 
 on:
   push:
+    branches:
+      - master
   pull_request:
     branches:
       - master
@@ -17,4 +19,4 @@ jobs:
           touch .env
           echo ${{ secrets.ENV_VARS }} >> .env
       - name: Build and run the Docker
-        run: docker-compose up -d --build
+        run: docker compose up -d --build
