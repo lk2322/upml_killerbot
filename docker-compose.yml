@@ -17,9 +17,7 @@ services:
     volumes:
       - db_files:/app/src/database/db_files
     env_file: .env
-    environment:
-      PYTHONUNBUFFERED: 1
-      PYTHONDONTWRITEBYTECODE: 1
+
 
 volumes:
   db_files:

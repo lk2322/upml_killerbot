@@ -1,5 +1,8 @@
 FROM python:3.10.11-slim as builder
 
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
 WORKDIR /app
 
 RUN apt-get update && \

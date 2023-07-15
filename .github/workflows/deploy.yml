@@ -14,6 +14,6 @@ jobs:
       - name: Create env file
         run: |
           touch .env
-          echo ${{ secrets.ENV_VARS }} >> .env
+          echo ${{ secrets.ENV_VARS }} > .env
       - name: Build and run the Docker
         run: docker compose up -d --build
