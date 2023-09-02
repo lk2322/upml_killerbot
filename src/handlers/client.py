@@ -24,10 +24,10 @@ async def target(message: types.Message):
         else:
             await message.answer(
                 f"Ваша цель: {user.victim.get().victim.name}",
-                reply_markup=main_markup
+                reply_markup=main_markup,
             )
 
 
 def register_client_handlers(dp: Dispatcher) -> None:
-    dp.register_message_handler(send_welcome, commands=['start', 'help'])
+    dp.register_message_handler(send_welcome, commands=["start", "help"])
     dp.register_message_handler(target)

@@ -44,7 +44,7 @@ def tg_click_name(username: str | int, user_id: TG_ID) -> str:
     :param username: Отображаемое имя.
     :param user_id: ТГ Айди.
     """
-    return f'[{username}](tg://user?id={user_id})'
+    return f"[{username}](tg://user?id={user_id})"
 
 
 def wrap(text: str) -> Iterable[str]:
@@ -57,7 +57,8 @@ def wrap(text: str) -> Iterable[str]:
     """
     return textwrap.wrap(
         text,
-        width=consts.MESSAGE_WIDTH_LIMIT, replace_whitespace=False
+        width=consts.MESSAGE_WIDTH_LIMIT,
+        replace_whitespace=False,
     )
 
 

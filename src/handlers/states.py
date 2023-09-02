@@ -34,37 +34,36 @@ async def name_start(callback: types.CallbackQuery):
 
 
 async def wait_name(message: types.Message, state: FSMContext):
-    f_name = ' '.join(word.capitalize() for word in message.text.split())
+    # Первые три слова и максимум 255 символов
+    full_name = " ".join(word.capitalize() for word in message.text.split()[:3])[:255]
+
     try:
-        db_funcs.add_user(message.from_user.id, f_name)
-        logger.info(f'Юзер "{f_name}" добавлен')
+        db_funcs.add_user(message.from_user.id, full_name)
+        logger.info(f'Юзер "{full_name}" добавлен')
         await message.answer(consts.READ_NAME_2)
     except peewee.IntegrityError:
         await message.answer(consts.NAME_ALREADY_EXISTS)
+
     await state.finish()
 
 
 async def death_start(message: types.Message):
     user = db_funcs.get_user_by_telegram_id(message.from_user.id)
+
     if user.is_dead:
         await message.answer(consts.ALREADY_DEAD)
         return
+
     await ConfirmDeath.confirm.set()
-    await message.answer(consts.DEATH_CONFIRMATION, reply_markup=death_markup)
+    await message.answer(consts.ARE_YOU_SURE_DEATH_CONFIRM, reply_markup=death_markup)
 
 
 async def death_confirm(message: types.Message, state: FSMContext):
     if message.text == consts.TextCommands.YES:
-        killer, victim, user = db_funcs.kill_user_by_telegram_id(
-            message.from_user.id
-        )
+        killer, victim, user = db_funcs.kill_user_by_telegram_id(message.from_user.id)
         logger.info(f'"{killer.name}" убил "{user.name}" ("{victim.name}")')
-        await message.bot.send_message(
-            killer.telegram_id, f"Ваша цель: {victim.name}"
-        )
-        await message.answer(
-            consts.DEATH_CONFIRMED, reply_markup=ReplyKeyboardRemove()
-        )
+        await message.bot.send_message(killer.telegram_id, f"Ваша цель: {victim.name}")
+        await message.answer(consts.DEATH_CONFIRMED, reply_markup=ReplyKeyboardRemove())
     else:
         await message.answer("Отмена", reply_markup=main_markup)
 
@@ -73,7 +72,9 @@ async def death_confirm(message: types.Message, state: FSMContext):
 
 def register_state_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(
-        name_start, lambda c: c.data == CallbackData.JOIN_THE_GAME, state="*"
+        name_start,
+        lambda c: c.data == CallbackData.JOIN_THE_GAME,
+        state="*",
     )
     dp.register_message_handler(wait_name, state=WriteName.waiting_for_name)
     dp.register_message_handler(death_confirm, state=ConfirmDeath.confirm)

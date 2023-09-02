@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   killer:
     image: upml_killerimage
@@ -9,14 +10,14 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "2"
-          memory: "256M"
-        reservations:
           cpus: "1"
-          memory: "128M"
+          memory: "256M"
     volumes:
       - db_files:/app/src/database/db_files
     env_file: .env
+    environment:
+      PYTHONUNBUFFERED: 1
+      PYTHONDONTWRITEBYTECODE: 1
 
 
 volumes:

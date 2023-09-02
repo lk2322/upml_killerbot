@@ -15,7 +15,11 @@ async def on_startup(dp: Dispatcher) -> None:
     register_state_handlers(dp)
 
 
-if __name__ == '__main__':
-    bot = Bot(token=Config.TOKEN, parse_mode='markdown')
+def main():
+    bot = Bot(token=Config.TOKEN, parse_mode="markdown")
     dp = Dispatcher(bot, storage=MemoryStorage())
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
+
+
+if __name__ == "__main__":
+    main()

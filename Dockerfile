@@ -21,7 +21,7 @@ WORKDIR /app
 COPY --from=builder /app/wheels /wheels
 COPY --from=builder /app/requirements.txt .
 
-COPY /src ./src
+COPY ./src ./src
 
 RUN pip install --no-cache --no-cache-dir /wheels/*
 
