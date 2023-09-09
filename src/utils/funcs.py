@@ -1,5 +1,5 @@
 import functools
-import textwrap
+# import textwrap
 from typing import Iterable
 
 from src.database import db_funcs
@@ -47,19 +47,30 @@ def tg_click_name(username: str | int, user_id: TG_ID) -> str:
     return f"[{username}](tg://user?id={user_id})"
 
 
-def wrap(text: str) -> Iterable[str]:
+def wrap(text: list[str]) -> Iterable[str]:
     """
-    Обрезка длинного сообщения по лимиту телеграмма для отправки
-    в нескольк сообщений.
+    Обрезка списка с строками по лимиту телеграмма для отправки в нескольк сообщений.
 
     :param text: Сообщение.
     :return: Сообщения.
     """
-    return textwrap.wrap(
-        text,
-        width=consts.MESSAGE_WIDTH_LIMIT,
-        replace_whitespace=False,
-    )
+    if not text:
+        return ""
+
+    # if isinstance(text, str):
+    #     return textwrap.wrap(
+    #         text,
+    #         width=consts.MESSAGE_WIDTH_LIMIT,
+    #         replace_whitespace=False,
+    #     )
+
+    text = text.copy()
+    line = ""
+    while text:
+        while text and len(line + text[0]) < consts.MESSAGE_WIDTH_LIMIT:
+            line += text.pop(0) + "\n"
+        yield line
+        line = ""
 
 
 def is_game_started() -> bool:

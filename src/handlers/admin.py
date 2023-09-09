@@ -23,29 +23,35 @@ async def disqualification(
     bot: Bot,
     message_to_users: str,
     action: str,
-) -> str:
-    data = ""
+) -> list[str]:
+    data = []
 
     for db_id in ids:
         try:
             user = function(db_id)
         except peewee.DoesNotExist:
-            data += f"Юзера *{db_id}* не существует\n"
+            data.append(f"Юзера *{db_id}* не существует")
             continue
 
         try:
             await bot.send_message(user.telegram_id, message_to_users)
-            data += f"Юзер {tg_click_name(db_id, user.telegram_id)} {action}\n"
+            data.append(f"Юзер {tg_click_name(db_id, user.telegram_id)} {action}")
         except BotBlocked:
-            data += f"Юзер {tg_click_name(db_id, user.telegram_id)} заблокировал бота ({action})\n"
+            data.append(
+                f"Юзер {tg_click_name(db_id, user.telegram_id)} "
+                f"заблокировал бота ({action})"
+            )
         except ChatNotFound:
-            data += f"Нет чата с юзером {tg_click_name(db_id, user.telegram_id)} ({action})\n"
+            data.append(
+                f"Нет чата с юзером "
+                f"{tg_click_name(db_id, user.telegram_id)} ({action})"
+            )
 
     return data
 
 
-async def send_victims_to_killers() -> str:
-    data = ""
+async def send_victims_to_killers() -> list[str]:
+    data = []
     bot = Bot.get_current(no_error=False)
 
     for user in db_funcs.get_all_users():
@@ -56,27 +62,33 @@ async def send_victims_to_killers() -> str:
                 reply_markup=main_markup,
             )
         except BotBlocked:
-            data += (
-                f"Юзер {tg_click_name(user.id, user.telegram_id)} заблокировал бота\n"
+            data.append(
+                f"Юзер {tg_click_name(user.id, user.telegram_id)} заблокировал бота"
             )
         except ChatNotFound:
-            data += f"Нет чата с юзером {tg_click_name(user.id, user.telegram_id)}\n"
+            data.append(f"Нет чата с юзером {tg_click_name(user.id, user.telegram_id)}")
 
     return data
 
 
 @admin_only
 async def check_users(message: types.Message) -> None:
-    data = ""
+    data = []
     for user in db_funcs.get_all_users():
         alive = "❌" if user.is_dead else "✅"
-        res = f"{alive} {user.id}. {tg_click_name(user.name, user.telegram_id)} - {user.kills} убийств."
+        res = (
+            f"{alive} {user.id}. {tg_click_name(user.name, user.telegram_id)} - "
+            f"{user.kills} убийств."
+        )
         try:
             victim = user.victim.get().victim
-            res += f" Жертва: {victim.id} - {tg_click_name(victim.name, victim.telegram_id)}"
+            res += (
+                f" Жертва: {victim.id} - "
+                f"{tg_click_name(victim.name, victim.telegram_id)}"
+            )
         except peewee.DoesNotExist:
             pass
-        data += res + "\n"
+        data.append(res)
 
     for line in wrap(data):
         await message.answer(line)
@@ -88,9 +100,12 @@ async def check_users(message: types.Message) -> None:
 @admin_only
 @game_started
 async def list_alive(message: types.Message) -> None:
-    data = ""
+    data = []
     for user in db_funcs.get_all_alive_users():
-        data += f"{user.id}. {tg_click_name(user.name, user.telegram_id)} - {user.kills} убийств\n"
+        data.append(
+            f"{user.id}. "
+            f"{tg_click_name(user.name, user.telegram_id)} - {user.kills} убийств"
+        )
 
     for line in wrap(data):
         await message.answer(line)
@@ -122,9 +137,7 @@ async def kill(message: types.Message) -> None:
     ids = map(int, message.get_args().split())
 
     func = db_funcs.kill_user_by_id
-    data = await disqualification(
-        ids, func, message.bot, DEATH_CONFIRMED, "убит"
-    )
+    data = await disqualification(ids, func, message.bot, DEATH_CONFIRMED, "убит")
 
     for line in wrap(data):
         await message.answer(line)
@@ -136,7 +149,7 @@ async def kill(message: types.Message) -> None:
 @admin_only
 async def start_game(message: types.Message) -> None:
     db_funcs.start_game()
-    data = "Игра началась!\n\n" + (await send_victims_to_killers())
+    data = ["Игра началась!\n"] + await send_victims_to_killers()
     for line in wrap(data):
         await message.answer(line)
 
@@ -145,7 +158,7 @@ async def start_game(message: types.Message) -> None:
 @game_started
 async def shuffle(message: types.Message) -> None:
     db_funcs.shuffle_users()
-    data = "Шафл успешен!\n\n" + (await send_victims_to_killers())
+    data = ["Шафл успешен!\n"] + await send_victims_to_killers()
     for line in wrap(data):
         await message.answer(line)
 
@@ -154,17 +167,17 @@ async def shuffle(message: types.Message) -> None:
 async def message_to_all(message: types.Message):
     text = message.text.split(" ")[1:]
     text = " ".join(text)
-    data = "Сообщение отправлено!\n\n"
+    data = ["Сообщение отправлено!\n"]
 
     for user in db_funcs.get_all_users():
         try:
             await message.bot.send_message(user.telegram_id, text)
         except BotBlocked:
-            data += (
+            data.append(
                 f"Юзер {tg_click_name(user.id, user.telegram_id)} заблокировал бота\n"
             )
         except ChatNotFound:
-            data += f"Нет чата с юзером {tg_click_name(user.id, user.telegram_id)}\n"
+            data.append(f"Нет чата с юзером {tg_click_name(user.id, user.telegram_id)}")
 
     for line in wrap(data):
         await message.answer(line)

@@ -9,9 +9,7 @@ load_dotenv()
 
 class Config:
     TOKEN = os.environ["TOKEN"]
-    VOLUME_FOLDER = (
-        Path(__file__).absolute().parent.parent / "database" / "db_files"
-    )
+    VOLUME_FOLDER = Path(__file__).absolute().parent.parent / "database" / "db_files"
     DB_FILE = VOLUME_FOLDER / (os.getenv("DB_FILE") or "database.sqlite")
     LOG_FILE = VOLUME_FOLDER / (os.getenv("LOG_FILE") or "logs.log")
     BETTER_CALL_SAUL = (
