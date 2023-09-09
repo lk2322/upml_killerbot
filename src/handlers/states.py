@@ -28,12 +28,20 @@ async def name_start(callback: types.CallbackQuery):
             callback.from_user.id, consts.GAME_ALREADY_STARTED
         )
         return
+    if db_funcs.get_user_by_telegram_id(callback.from_user.id):
+        await callback.bot.send_message(
+            callback.from_user.id, consts.ALREADY_PLAYING
+        )
 
     await callback.bot.send_message(callback.from_user.id, consts.READ_NAME_1)
     await WriteName.waiting_for_name.set()
 
 
 async def wait_name(message: types.Message, state: FSMContext):
+    if is_game_started():  # Начал name_start до начала игры, ввёл имя после начала
+        await state.finish()
+        return
+
     # Первые три слова и максимум 255 символов
     full_name = " ".join(word.capitalize() for word in message.text.split()[:3])[:255]
 
