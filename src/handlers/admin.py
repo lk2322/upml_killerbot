@@ -50,11 +50,10 @@ async def disqualification(
     return data
 
 
-async def send_victims_to_killers() -> list[str]:
+async def send_victims_to_killers(bot: Bot) -> list[str]:
     data = []
-    bot = Bot.get_current(no_error=False)
 
-    for user in db_funcs.get_all_users():
+    for user in db_funcs.get_all_alive_users():
         try:
             await bot.send_message(
                 user.telegram_id,
@@ -149,7 +148,7 @@ async def kill(message: types.Message) -> None:
 @admin_only
 async def start_game(message: types.Message) -> None:
     db_funcs.start_game()
-    data = ["Игра началась!\n"] + await send_victims_to_killers()
+    data = ["Игра началась!\n"] + await send_victims_to_killers(message.bot)
     for line in wrap(data):
         await message.answer(line)
 
@@ -158,7 +157,7 @@ async def start_game(message: types.Message) -> None:
 @game_started
 async def shuffle(message: types.Message) -> None:
     db_funcs.shuffle_users()
-    data = ["Шафл успешен!\n"] + await send_victims_to_killers()
+    data = ["Шафл успешен!\n"] + await send_victims_to_killers(message.bot)
     for line in wrap(data):
         await message.answer(line)
 
