@@ -51,12 +51,12 @@ def add_relationship(killer_id: DB_ID, victim_id: DB_ID) -> None:
 
 
 @connect_db
-def get_user_by_telegram_id(telegram_id: TG_ID) -> User:
-    return User.get(User.telegram_id == telegram_id)
+def get_user_by_telegram_id(telegram_id: TG_ID) -> User | None:
+    return User.get_or_none(User.telegram_id == telegram_id)
 
 
-def get_user_by_id(db_id: DB_ID) -> User:
-    return User.get(User.id == db_id)
+def get_user_by_id(db_id: DB_ID) -> User | None:
+    return User.get_or_none(User.id == db_id)
 
 
 @connect_db
