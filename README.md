@@ -32,5 +32,5 @@ This bot was created for the game "Killer" in the Ugra Physics and Mathematics L
 - /message *[text]*
 
 ## TODO
-- [ ] - Refactor all this shit
-- [ ] - Make transactions in the database
+- [x] - Refactor all this shit
+- [x] - Make transactions in the database
