@@ -29,9 +29,7 @@ async def name_start(callback: types.CallbackQuery):
         )
         return
     if db_funcs.get_user_by_telegram_id(callback.from_user.id):
-        await callback.bot.send_message(
-            callback.from_user.id, consts.ALREADY_PLAYING
-        )
+        await callback.bot.send_message(callback.from_user.id, consts.ALREADY_PLAYING)
 
     await callback.bot.send_message(callback.from_user.id, consts.READ_NAME_1)
     await WriteName.waiting_for_name.set()

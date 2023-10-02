@@ -7,7 +7,7 @@ This bot was created for the game "Killer" in the Ugra Physics and Mathematics L
     * DB_FILE - DB file name
     * LOG_FILE - Log file name
     * BETTER_CALL_SAUL - How to contact with admin
-    * ADMIN_ID - Telegram id admin
+    * ADMIN_ID - Admin Telegram ID 
 
 2.  Launch
     * Local
@@ -17,7 +17,7 @@ This bot was created for the game "Killer" in the Ugra Physics and Mathematics L
       ```
     * Docker
       ```
-      docker-compose up -d --no-deps --build
+      docker-compose up -d --build
       ```
 
 ## Admin commands

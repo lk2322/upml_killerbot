@@ -1,5 +1,4 @@
 import functools
-# import textwrap
 from typing import Iterable
 
 from src.database import db_funcs
@@ -56,13 +55,6 @@ def wrap(text: list[str]) -> Iterable[str]:
     """
     if not text:
         return ""
-
-    # if isinstance(text, str):
-    #     return textwrap.wrap(
-    #         text,
-    #         width=consts.MESSAGE_WIDTH_LIMIT,
-    #         replace_whitespace=False,
-    #     )
 
     text = text.copy()
     line = ""
