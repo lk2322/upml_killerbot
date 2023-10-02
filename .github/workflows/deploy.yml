@@ -2,21 +2,17 @@ name: Deploy to production
 
 on:
   push:
-    branches: [ "master" ]
-    paths-ignore:
-        - '**/README.md'
-
+    branches:
+      - master
 
 jobs:
-
   build:
-    environment: main
+    environment: production
     runs-on: self-hosted
-    env:
-      TOKEN: ${{ secrets.TOKEN }}
-      ADMIN_ID: ${{ secrets.ADMIN_ID }}
-      DB_FILE: ${{ secrets.DB_FILE }}
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker-compose up -d --build
+      - uses: actions/checkout@v3
+      - name: Create env file
+        run: |
+          echo "${{ secrets.ENV_VARS }}" > .env
+      - name: Build and run the Docker
+        run: docker compose up -d --build

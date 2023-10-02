@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  killer:
+    image: upml_killerimage
+    container_name: upml_killerbot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "256M"
+    volumes:
+      - db_files:/app/src/database/db_files
+    env_file: .env
+    environment:
+      PYTHONUNBUFFERED: 1
+      PYTHONDONTWRITEBYTECODE: 1
+
+
+volumes:
+  db_files:
